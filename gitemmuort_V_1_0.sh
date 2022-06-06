@@ -73,19 +73,23 @@ do
             git pull
         ;;
         
-        "git sarba")
+        "git ammutta")
             git push
         ;;
         
-        "git sarba sicuro")
+        "git ammutta forte")
             git push -f
         ;;
         
-        "git puliziamm")
+        "git sarba")
             git stash
         ;;
+
+        "git sarba e metti")
+            git stash apply
+        ;;
         
-        "git situescion")
+        "git controlla")
             git log
         ;;
         
