@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/ksh
+
 echo "
 $(tput setaf 5)   _____ _____ _______ $(tput setaf 6)______ __  __ __  __ _    _  ____  _____ _______
 $(tput setaf 5)  / ____|_   _|__   __$(tput setaf 6)|  ____|  \/  |  \/  | |  | |/ __ \|  __ \__   __|
@@ -13,50 +14,55 @@ echo "Percorso attuale: $(pwd)"
 
 git_help() {
     echo "
-	$(tput setaf 7)  ________________________________________________
-	$(tput setaf 7) |                                                |
-	$(tput setaf 7) | git piliamm $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
-	$(tput setaf 7) | git sarba $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                        |
-	$(tput setaf 7) | git sarba sicuro $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)              |
-	$(tput setaf 7) | git puliziamm $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                   |
-	$(tput setaf 7) | git situescion $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                    |
-	$(tput setaf 7) | git resetta e sarba $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)      |
-	$(tput setaf 7) | git resetta tutt cos $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)     |
-	$(tput setaf 7) |________________________________________________|
+$(tput setaf 7)  ________________________________________________
+$(tput setaf 7) |                                                |
+$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                     |
+$(tput setaf 7) |________________________________________________|
+$(tput setaf 7) |                                                |
+$(tput setaf 7) | git piliamm $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
+$(tput setaf 7) | git ammutta $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                      |
+$(tput setaf 7) | git ammutta forte $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)             |
+$(tput setaf 7) | git sarba $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                       |
+$(tput setaf 7) | git sarba e metti $(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)         |
+$(tput setaf 7) | git controlla $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                     |
+$(tput setaf 7) | git commetti $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                |
+$(tput setaf 7) | git resetta e sarba $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)      |
+$(tput setaf 7) | git resetta tutt cos $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)     |
+$(tput setaf 7) |________________________________________________|
     "
 }
 
 git_commmit() {
-	echo "Messaggio del commit:"
-	read commit_message
-
-	git add .
-	git commit -m "$commit_message"
-	git log
+    echo "Messaggio del commit:"
+    read -e commit_message
+    
+    git add .
+    git commit -m "$commit_message"
+    git log
 }
 
 git_reset_soft() {
-	echo "Di quanti commit vuoi tornare indietro? (RESET SOFT)"
-	read commit_number
-
-	git reset --soft HEAD~$commit_number
-
-	echo
-	echo "$(tput setaf 6) Reset SOFT EFFETTUATO"
-	echo
-	git log
+    echo "Di quanti commit vuoi tornare indietro? (RESET SOFT)"
+    read -e commit_number
+    
+    git reset --soft HEAD~$commit_number
+    
+    echo
+    echo "$(tput setaf 6) Reset SOFT EFFETTUATO"
+    echo
+    git log
 }
 
 git_reset_hard() {
-	echo "Di quanti commit vuoi tornare indietro? (RESET HARD)"
-	read commit_number
-
-	git reset --hard HEAD~$commit_number
-
-	echo
-	echo "$(tput setaf 6) Reset HARD EFFETTUATO"
-	echo
-	git log
+    echo "Di quanti commit vuoi tornare indietro? (RESET HARD)"
+    read -e commit_number
+    
+    git reset --hard HEAD~$commit_number
+    
+    echo
+    echo "$(tput setaf 6) Reset HARD EFFETTUATO"
+    echo
+    git log
 }
 
 echo
@@ -65,7 +71,7 @@ echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) per la l
 
 while :
 do
-    read command
+    read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
         
@@ -84,7 +90,7 @@ do
         "git sarba")
             git stash
         ;;
-
+        
         "git sarba e metti")
             git stash apply
         ;;
@@ -96,12 +102,12 @@ do
         "git commetti")
             git_commmit
         ;;
-
-		"git resetta e sarba")
+        
+        "git resetta e sarba")
             git_reset_soft
         ;;
-
-		"git resetta tutt cos")
+        
+        "git resetta tutt cos")
             git_reset_hard
         ;;
         
