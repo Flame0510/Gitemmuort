@@ -1,16 +1,19 @@
 #!/bin/ksh
 
-echo "
-$(tput setaf 5)   _____ _____ _______ $(tput setaf 6)______ __  __ __  __ _    _  ____  _____ _______
-$(tput setaf 5)  / ____|_   _|__   __$(tput setaf 6)|  ____|  \/  |  \/  | |  | |/ __ \|  __ \__   __|
-$(tput setaf 5) | |  __  | |    | |  $(tput setaf 6)| |__  | \  / | \  / | |  | | |  | | |__) | | |
-$(tput setaf 5) | | |_ | | |    | |  $(tput setaf 6)|  __| | |\/| | |\/| | |  | | |  | |  _  /  | |
-$(tput setaf 5) | |__| |_| |_   | |  $(tput setaf 6)| |____| |  | | |  | | |__| | |__| | | \ \  | |
-$(tput setaf 5)  \_____|_____|  |_|  $(tput setaf 6)|______|_|  |_|_|  |_|\____/ \____/|_|  \_\ |_| $(tput setaf 5) V 1.0
-"
-echo "$(tput setaf 7)"
-
-echo "Percorso attuale: $(pwd)"
+start() {
+    echo "
+    $(tput setaf 5)   _____ _____ _______ $(tput setaf 6)______ __  __ __  __ _    _  ____  _____ _______
+    $(tput setaf 5)  / ____|_   _|__   __$(tput setaf 6)|  ____|  \/  |  \/  | |  | |/ __ \|  __ \__   __|
+    $(tput setaf 5) | |  __  | |    | |  $(tput setaf 6)| |__  | \  / | \  / | |  | | |  | | |__) | | |
+    $(tput setaf 5) | | |_ | | |    | |  $(tput setaf 6)|  __| | |\/| | |\/| | |  | | |  | |  _  /  | |
+    $(tput setaf 5) | |__| |_| |_   | |  $(tput setaf 6)| |____| |  | | |  | | |__| | |__| | | \ \  | |
+    $(tput setaf 5)  \_____|_____|  |_|  $(tput setaf 6)|______|_|  |_|_|  |_|\____/ \____/|_|  \_\ |_| $(tput setaf 5) V 1.0
+    "
+    echo "$(tput setaf 7)"
+    
+    echo "Percorso attuale: $(pwd)"
+    echo
+}
 
 git_help() {
     echo "
@@ -82,6 +85,8 @@ git_reset_hard() {
     fi
 }
 
+start
+
 echo
 echo
 echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) per la lista dei comandi)"
@@ -130,6 +135,10 @@ do
         
         "help")
             git_help
+        ;;
+        
+        "restart")
+            start
         ;;
         
         *)
