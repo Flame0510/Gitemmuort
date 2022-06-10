@@ -22,6 +22,7 @@ $(tput setaf 7) |                                                |
 $(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                     |
 $(tput setaf 7) |________________________________________________|
 $(tput setaf 7) |                                                |
+$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                   |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
 $(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                     |
 $(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)           |
@@ -45,7 +46,7 @@ git_commmit() {
     then
         git add .
         git commit -m "$commit_message"
-        git log -3
+        git log -2
         echo
     else
         echo "Fatto"
@@ -63,7 +64,7 @@ git_reset_soft() {
         echo
         echo "$(tput setaf 6) Reset SOFT EFFETTUATO"
         echo
-        git log -3
+        git log -2
         echo
     else
         echo "Fatto"
@@ -83,7 +84,7 @@ git_reset_hard() {
         echo
         echo "$(tput setaf 6) Reset HARD EFFETTUATO"
         echo
-        git log -3
+        git log -2
         echo
     else
         echo "Fatto"
@@ -106,7 +107,7 @@ git_squash() {
             git reset --soft HEAD~$commit_number
             git add .
             git commit -m "$commit_message"
-            git log -3
+            git log -2
             echo
         else
             echo "Fatto"
@@ -129,6 +130,10 @@ do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
+        
+        "riallinea" | "f")
+            git fetch
+        ;;
         
         "piliamm" | "p")
             git pull
