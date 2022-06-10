@@ -29,8 +29,9 @@ $(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput s
 $(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)         |
 $(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                     |
 $(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                |
-$(tput setaf 7) | resetta e sarba | rs$(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)      |
+$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)      |
 $(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)    |
+$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                 |
 $(tput setaf 7) |________________________________________________|
     "
 }
@@ -43,7 +44,8 @@ git_commmit() {
     then
         git add .
         git commit -m "$commit_message"
-        git log
+        git log -3
+        echo
     else
         echo "Fatto"
     fi
@@ -60,7 +62,8 @@ git_reset_soft() {
         echo
         echo "$(tput setaf 6) Reset SOFT EFFETTUATO"
         echo
-        git log
+        git log -3
+        echo
     else
         echo "Fatto"
     fi
@@ -79,7 +82,36 @@ git_reset_hard() {
         echo
         echo "$(tput setaf 6) Reset HARD EFFETTUATO"
         echo
-        git log
+        git log -3
+        echo
+    else
+        echo "Fatto"
+    fi
+}
+
+git_squash() {
+    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    read -e commit_number
+    
+    last_commit_message=$(git log -1 --pretty=%B)
+    
+    if [[ "$commit_number" > 0 ]]
+    then
+        echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
+        read -e commit_message
+        
+        if [ "$commit_message" ]
+        then
+            git reset --soft HEAD~$commit_number
+            git add .
+            git commit -m "$commit_message"
+            git log -3
+            echo
+        else
+            echo "Fatto"
+        fi
+        
+        echo "$(tput setaf 6) Squash effettuato"
     else
         echo "Fatto"
     fi
@@ -131,6 +163,10 @@ do
         
         "resetta tutt cos" | "rh")
             git_reset_hard
+        ;;
+        
+        "sq")
+            git_squash
         ;;
         
         "help")
