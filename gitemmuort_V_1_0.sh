@@ -27,7 +27,7 @@ $(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput s
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
 $(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                     |
 $(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)           |
-$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                       |
+$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                     |
 $(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                       |
 $(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)         |
 $(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                     |
@@ -35,6 +35,7 @@ $(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $
 $(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)     |
 $(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)    |
 $(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                 |
+$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)       |
 $(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)            |
 $(tput setaf 7) |________________________________________________|
     "
@@ -97,8 +98,6 @@ git_squash() {
     echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
-    last_commit_message=$(git log -1 --pretty=%B)
-    
     if [[ "$commit_number" > 0 ]]
     then
         echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
@@ -115,6 +114,25 @@ git_squash() {
             echo "Fatto"
         fi
         
+        echo "$(tput setaf 6) Squash effettuato"
+    else
+        echo "Fatto"
+    fi
+}
+
+git_squash_last_commit() {
+    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    read -e commit_number
+    
+    last_commit_message=$(git log -1 --pretty=%B)
+    
+    if [[ "$commit_number" > 0 ]]
+    then
+        git reset --soft HEAD~$commit_number
+        git add .
+        git commit -m "$last_commit_message"
+        git log -2
+        echo
         echo "$(tput setaf 6) Squash effettuato"
     else
         echo "Fatto"
@@ -183,6 +201,10 @@ do
         
         "sq")
             git_squash
+        ;;
+        
+        "sql")
+            git_squash_last_commit
         ;;
         
         "help" | "h")
