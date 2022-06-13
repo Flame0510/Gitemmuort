@@ -23,9 +23,11 @@ $(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                      
 $(tput setaf 7) |________________________________________________|
 $(tput setaf 7) |                                                |
 $(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                   |
+$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                       |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
 $(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                     |
 $(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)           |
+$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                       |
 $(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                       |
 $(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)         |
 $(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                     |
@@ -135,6 +137,10 @@ do
             git fetch
         ;;
         
+        "ramo" | "b")
+            git branch
+        ;;
+        
         "piliamm" | "p")
             git pull
         ;;
@@ -145,6 +151,10 @@ do
         
         "ammutta forte" | "puf")
             git push -f
+        ;;
+        
+        "stato" | "st")
+            git status
         ;;
         
         "sarba" | "s")
@@ -180,6 +190,11 @@ do
         ;;
         
         "restart" | "r")
+            start
+        ;;
+        
+        "pulisci e ricomincia" | "cr")
+            clear
             start
         ;;
         
