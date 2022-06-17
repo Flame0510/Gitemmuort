@@ -27,6 +27,7 @@ $(tput setaf 7) |                                                |
 $(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                     |
 $(tput setaf 7) |________________________________________________|
 $(tput setaf 7) |                                                |
+$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                     |
 $(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                   |
 $(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                       |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
@@ -45,6 +46,20 @@ $(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit 
 $(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)            |
 $(tput setaf 7) |________________________________________________|
     "
+}
+
+
+git_clone() {
+    echo "Inserisci il link della repository (Lascia il campo vuoto per uscire):"
+    read -e git_url
+    
+    if [ "$git_url" ]
+    then
+        git clone "$git_url"        
+        echo
+    else
+        echo "Fatto"
+    fi
 }
 
 git_commmit() {
@@ -156,6 +171,10 @@ do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
+
+        "clona" | "cln")
+            git_clone
+        ;;
         
         "riallinea" | "f")
             git fetch
