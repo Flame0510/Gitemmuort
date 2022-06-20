@@ -117,6 +117,14 @@ git_reset_hard() {
     fi
 }
 
+git_delete_current_branch() {
+    current_branch=`git branch --show current`
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+
+    git checkout $master
+    git branch -D $current_branch
+}
+
 git_squash() {
     echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
@@ -172,6 +180,10 @@ do
     
     case $command in
 
+        "sele")
+            git_select
+        ;;
+
         "clona" | "cln")
             git_clone
         ;;
@@ -182,6 +194,10 @@ do
         
         "ramo" | "b")
             git branch
+        ;;
+
+        "elimina ramo attuale" | "dcb")
+            git_delete_current_branch
         ;;
         
         "piliamm" | "p")
