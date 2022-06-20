@@ -41,6 +41,7 @@ $(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) e
 $(tput setaf 7) |                                                        |
 $(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tput setaf 7)                           |
 $(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)  |
+$(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) checkout ramo precedente $(tput setaf 7)  |
 $(tput setaf 7) |                                                        |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                              |
 $(tput setaf 7) |                                                        |
@@ -97,6 +98,8 @@ git_commmit() {
     fi
 }
 
+
+#RESET
 git_reset_soft() {
     echo "Di quanti commit vuoi tornare indietro? (RESET SOFT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
@@ -133,6 +136,8 @@ git_reset_hard() {
     fi
 }
 
+
+#BRANCH
 git_add_branch() {
     echo "Inserisci il nome del nuovo branch (Lascia il campo vuoto per uscire):"
     read -e branch_name
@@ -163,6 +168,16 @@ git_delete_branch() {
     fi
 }
 
+git_delete_current_branch() {
+    current_branch=`git branch --show current`
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+
+    git checkout $master
+    git branch -D $current_branch
+}
+
+
+#CHECKOUT
 git_checkout() {
     git branch
     echo 
@@ -184,14 +199,8 @@ git_checkout_master() {
     git checkout $master
 }
 
-git_delete_current_branch() {
-    current_branch=`git branch --show current`
-    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
 
-    git checkout $master
-    git branch -D $current_branch
-}
-
+#SQUASH
 git_squash() {
     echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
@@ -282,6 +291,10 @@ do
 
         "vai al principale" | "chm")
             git_checkout_master
+        ;;
+
+        "vai al precedente" | "chl")
+            git checkout -
         ;;
 
         
