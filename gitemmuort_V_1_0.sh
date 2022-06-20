@@ -131,6 +131,22 @@ git_add_branch() {
     fi
 }
 
+git_delete_branch() {
+    git branch
+    echo 
+    echo "Inserisci il nome del branch che vuoi eliminare (Lascia il campo vuoto per uscire):"
+    read -e branch_name
+    
+    if [ "$branch_name" ]
+    then
+        git branch -D "$branch_name"        
+        echo
+        git branch
+    else
+        echo "Fatto"
+    fi
+}
+
 git_delete_current_branch() {
     current_branch=`git branch --show current`
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
