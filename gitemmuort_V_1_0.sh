@@ -26,33 +26,49 @@ start() {
 
 git_help() {
     echo "
-$(tput setaf 7)  ________________________________________________
-$(tput setaf 7) |                                                |
-$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                     |
-$(tput setaf 7) |________________________________________________|
-$(tput setaf 7) |                                                |
-$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                     |
-$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                   |
-$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                       |
-$(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                      |
-$(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                     |
-$(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)           |
-$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                     |
-$(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                       |
-$(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)         |
-$(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                     |
-$(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                    |
-$(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                |
-$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)     |
-$(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)    |
-$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                 |
-$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)       |
-$(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)            |
-$(tput setaf 7) |________________________________________________|
+$(tput setaf 7)  ________________________________________________________
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                             |
+$(tput setaf 7) |________________________________________________________|
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                             |
+$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                           |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                               |
+$(tput setaf 7) | crea ramo | ab $(tput setaf 5) > $(tput setaf 6) crea nuova branch $(tput setaf 7)                  |
+$(tput setaf 7) | elimina ramo | db $(tput setaf 5) > $(tput setaf 6) git branch -D $(tput setaf 7)                   |
+$(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) elimina ramo attuale $(tput setaf 7)   |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tput setaf 7)                           |
+$(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)  |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                              |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                             |
+$(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)                   |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                             |
+$(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                            |
+$(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                               |
+$(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                 |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                             |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                        |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)             |
+$(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)            |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                         |
+$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)               |
+$(tput setaf 7) |                                                        |
+$(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)                    |
+$(tput setaf 7) |________________________________________________________|
     "
 }
 
 
+#FUNCTIONS
 git_clone() {
     echo "Inserisci il link della repository (Lascia il campo vuoto per uscire):"
     read -e git_url
@@ -224,25 +240,24 @@ git_squash_last_commit() {
 start
 
 
-
 while :
 do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
-
-        "sele")
-            git_select
-        ;;
-
+        
+        #clone
         "clona" | "cln")
             git_clone
         ;;
         
+        #fetch
         "riallinea" | "f")
             git fetch
         ;;
         
+
+        #branch
         "ramo" | "b")
             git branch
         ;;
@@ -251,14 +266,16 @@ do
             git_add_branch
         ;;
 
-        "elimina ramo attuale" | "dcb")
-            git_delete_current_branch
-        ;;
-
         "elimina ramo" | "db")
             git_delete_branch
         ;;
 
+        "elimina ramo attuale" | "dcb")
+            git_delete_current_branch
+        ;;        
+
+
+        #checkout
         "vai a" | "ch")
             git_checkout
         ;;
@@ -266,11 +283,13 @@ do
         "vai al principale" | "chm")
             git_checkout_master
         ;;
+
         
         "piliamm" | "p")
             git pull
         ;;
         
+        #push
         "ammutta" | "pu")
             git push
         ;;
@@ -278,7 +297,13 @@ do
         "ammutta forte" | "puf")
             git push -f
         ;;
-        
+
+
+        #add - status - stash
+        "aggiungi" | "a")
+            git add .
+        ;;
+
         "stato" | "st")
             git status
         ;;
@@ -290,19 +315,21 @@ do
         "sarba e metti" | "sa")
             git stash apply
         ;;
-        
+
+
+        #log
         "controlla" | "l")
             git log
         ;;
         
-        "aggiungi" | "a")
-            git add .
-        ;;
         
+        #commit
         "commetti" | "c")
             git_commmit
         ;;
         
+
+        #reset
         "resetta e sarba" | "rs")
             git_reset_soft
         ;;
@@ -311,6 +338,8 @@ do
             git_reset_hard
         ;;
         
+
+        #squash
         "sq")
             git_squash
         ;;
@@ -318,11 +347,15 @@ do
         "sql")
             git_squash_last_commit
         ;;
-        
+
+
+        #help
         "help" | "h")
             git_help
         ;;
-        
+
+
+        #restart
         "restart" | "r")
             start
         ;;
