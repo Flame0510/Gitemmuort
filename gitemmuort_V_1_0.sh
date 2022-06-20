@@ -18,6 +18,10 @@ start() {
     
     echo "Percorso attuale: $(pwd)"
     echo
+
+    echo
+    echo
+    echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) oppure $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi)"
 }
 
 git_help() {
@@ -92,9 +96,7 @@ git_reset_soft() {
         echo
     else
         echo "Fatto"
-    fi
-    
-    
+    fi   
 }
 
 git_reset_hard() {
@@ -162,9 +164,7 @@ git_squash_last_commit() {
 
 start
 
-echo
-echo
-echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) oppure $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi)"
+
 
 while :
 do
