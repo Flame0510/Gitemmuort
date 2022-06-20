@@ -147,6 +147,22 @@ git_delete_branch() {
     fi
 }
 
+git_checkout() {
+    git branch
+    echo 
+    echo "Inserisci il nome del branch in cui vuoi spostarti (Lascia il campo vuoto per uscire):"
+    read -e branch_name
+
+    if [ "$branch_name" ]
+    then
+        git checkout "$branch_name"        
+        echo
+        git branch
+    else
+        echo "Fatto"
+    fi
+}
+
 git_checkout_master() {
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
     git checkout $master
@@ -241,6 +257,10 @@ do
 
         "elimina ramo" | "db")
             git_delete_branch
+        ;;
+
+        "vai a" | "ch")
+            git_checkout
         ;;
 
         "vai al principale" | "chm")
