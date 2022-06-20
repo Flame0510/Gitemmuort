@@ -147,6 +147,11 @@ git_delete_branch() {
     fi
 }
 
+git_checkout_master() {
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git checkout $master
+}
+
 git_delete_current_branch() {
     current_branch=`git branch --show current`
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
@@ -236,6 +241,10 @@ do
 
         "elimina ramo" | "db")
             git_delete_branch
+        ;;
+
+        "vai al principale" | "chm")
+            git_checkout_master
         ;;
         
         "piliamm" | "p")
