@@ -48,8 +48,9 @@ $(tput setaf 7) |                                                        |
 $(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                             |
 $(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)                   |
 $(tput setaf 7) |                                                        |
-$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                             |
 $(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                            |
+$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                             |
+$(tput setaf 7) |                                                        |
 $(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                               |
 $(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                 |
 $(tput setaf 7) |                                                        |
@@ -297,7 +298,7 @@ do
             git checkout -
         ;;
 
-        
+        #pull
         "piliamm" | "p")
             git pull
         ;;
@@ -312,7 +313,7 @@ do
         ;;
 
 
-        #add - status - stash
+        #add - status
         "aggiungi" | "a")
             git add .
         ;;
@@ -321,6 +322,8 @@ do
             git status
         ;;
         
+
+        #stash
         "sarba" | "s")
             git stash
         ;;
