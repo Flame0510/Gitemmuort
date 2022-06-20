@@ -117,6 +117,20 @@ git_reset_hard() {
     fi
 }
 
+git_add_branch() {
+    echo "Inserisci il nome del nuovo branch (Lascia il campo vuoto per uscire):"
+    read -e branch_name
+    
+    if [ "$branch_name" ]
+    then
+        git checkout -b "$branch_name"        
+        echo
+        git branch
+    else
+        echo "Fatto"
+    fi
+}
+
 git_delete_current_branch() {
     current_branch=`git branch --show current`
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
@@ -196,8 +210,16 @@ do
             git branch
         ;;
 
+        "crea ramo" | "ab")
+            git_add_branch
+        ;;
+
         "elimina ramo attuale" | "dcb")
             git_delete_current_branch
+        ;;
+
+        "elimina ramo" | "db")
+            git_delete_branch
         ;;
         
         "piliamm" | "p")
