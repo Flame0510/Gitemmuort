@@ -202,7 +202,7 @@ git_checkout_master() {
 
 #SQUASH
 git_squash() {
-    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Di quanti commit vuoi fare lo squash? (SQUASH CON MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
     if [[ "$commit_number" > 0 ]]
@@ -228,7 +228,7 @@ git_squash() {
 }
 
 git_squash_last_commit() {
-    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Di quanti commit vuoi fare lo squash? (SQUASH CON L'ULTIMO MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
     last_commit_message=$(git log -1 --pretty=%B)
