@@ -51,6 +51,7 @@ $(tput setaf 7) |                                                        |
 $(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                            |
 $(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                             |
 $(tput setaf 7) |                                                        |
+$(tput setaf 7) | aggiungi e sarba | as $(tput setaf 5) > $(tput setaf 6) git add . + git stash $(tput setaf 7)       |
 $(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                               |
 $(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                 |
 $(tput setaf 7) |                                                        |
@@ -324,6 +325,11 @@ do
         
 
         #stash
+        "aggiungi e sarba" | "as")
+            git add .
+            git stash
+        ;;
+
         "sarba" | "s")
             git stash
         ;;

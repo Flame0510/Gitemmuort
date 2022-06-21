@@ -47,6 +47,7 @@ by `Flame0510`
 
 ### Stash
 
+**`aggiungi e sarba`** | **`as`** --> **` git add . + git stash`**\
 **`sarba`** | **`s`** --> **` git stash`**\
 **`sarba e metti`** | **`sa`** --> **` git stash apply`**\
 
