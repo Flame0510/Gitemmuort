@@ -26,47 +26,50 @@ start() {
 
 git_help() {
     echo "
-$(tput setaf 7)  ________________________________________________________
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                             |
-$(tput setaf 7) |________________________________________________________|
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                             |
-$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                           |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                               |
-$(tput setaf 7) | crea ramo | ab $(tput setaf 5) > $(tput setaf 6) crea nuova branch $(tput setaf 7)                  |
-$(tput setaf 7) | elimina ramo | db $(tput setaf 5) > $(tput setaf 6) git branch -D $(tput setaf 7)                   |
-$(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) elimina ramo attuale $(tput setaf 7)   |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tput setaf 7)                           |
-$(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)  |
-$(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) checkout ramo precedente $(tput setaf 7)  |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                              |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                             |
-$(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)                   |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                            |
-$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                             |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | aggiungi e sarba | as $(tput setaf 5) > $(tput setaf 6) git add . + git stash $(tput setaf 7)       |
-$(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                               |
-$(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                 |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                             |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                        |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)             |
-$(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)            |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                         |
-$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)               |
-$(tput setaf 7) |                                                        |
-$(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)                    |
-$(tput setaf 7) |________________________________________________________|
+$(tput setaf 7)  __________________________________________________________________
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                                       |
+$(tput setaf 7) |__________________________________________________________________|
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                                       |
+$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                                     |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                                         |
+$(tput setaf 7) | crea ramo | ab $(tput setaf 5) > $(tput setaf 6) crea nuova branch $(tput setaf 7)                            |
+$(tput setaf 7) | elimina ramo | db $(tput setaf 5) > $(tput setaf 6) git branch -D $(tput setaf 7)                             |
+$(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) elimina ramo attuale $(tput setaf 7)             |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tput setaf 7)                                     |
+$(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)            |
+$(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) checkout ramo precedente $(tput setaf 7)            |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | rebase main | rbm $(tput setaf 5) > $(tput setaf 6) rebase da branch principale $(tput setaf 7)               |
+$(tput setaf 7) | pull rebase main | prbm $(tput setaf 5) > $(tput setaf 6) pull rebase da branch principale $(tput setaf 7)    |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                                        |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                                       |
+$(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)                             |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                                      |
+$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                                       |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | aggiungi e sarba | as $(tput setaf 5) > $(tput setaf 6) git add . + git stash $(tput setaf 7)                 |
+$(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                                         |
+$(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                           |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                                       |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                                  |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)                       |
+$(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)                      |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                                   |
+$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)                         |
+$(tput setaf 7) |                                                                  |
+$(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)                              |
+$(tput setaf 7) |__________________________________________________________________|
     "
 }
 
@@ -201,6 +204,20 @@ git_checkout_master() {
     git checkout $master
 }
 
+#REBASE
+git_rebase_master() {
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git rebase $master
+}
+
+git_pull_rebase_master() {
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git checkout $master
+    git pull
+    git checkout -
+    git rebase $master
+}
+
 
 #SQUASH
 git_squash() {
@@ -297,6 +314,15 @@ do
 
         "vai al precedente" | "chl")
             git checkout -
+        ;;
+
+        #rebase
+        "rebase main" | "rbm")
+            git_rebase_master
+        ;;
+
+        "pull rebase main" | "prbm")
+            git_pull_rebase_master
         ;;
 
         #pull

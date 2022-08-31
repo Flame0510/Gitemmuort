@@ -31,6 +31,11 @@ by `Flame0510`
 **`vai al principale`** | **`chm`** --> **` checkout ramo principale`**\
 **`vai al precedente`** | **`chl`** --> **` checkout ramo precedente`**\
 
+### Rebase
+
+**`rebase main`** | **`rbm`** --> **` rebase da branch principale`**\
+**`pull rebase main`** | **`prbm`** --> **` pull and rebase da branch principale`**\
+
 ### Pull
 
 **`piliamm`** | **`p`** --> **` git pull`**\
