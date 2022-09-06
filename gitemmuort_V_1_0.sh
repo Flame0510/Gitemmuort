@@ -36,6 +36,7 @@ $(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tp
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                                         |
 $(tput setaf 7) | crea ramo | ab $(tput setaf 5) > $(tput setaf 6) crea nuova branch $(tput setaf 7)                            |
+$(tput setaf 7) | pubblica ramo | pb $(tput setaf 5) > $(tput setaf 6) pubblica branch $(tput setaf 7)                          |
 $(tput setaf 7) | elimina ramo | db $(tput setaf 5) > $(tput setaf 6) git branch -D $(tput setaf 7)                             |
 $(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) elimina ramo attuale $(tput setaf 7)             |
 $(tput setaf 7) |                                                                  |
@@ -155,6 +156,12 @@ git_add_branch() {
     else
         echo "Fatto"
     fi
+}
+
+git_publish_branch() {
+    current_branch=`git branch --show current`
+
+    git push -u origin $current_branch
 }
 
 git_delete_branch() {
@@ -292,6 +299,10 @@ do
 
         "crea ramo" | "ab")
             git_add_branch
+        ;;
+
+        "pubblica ramo" | "pb")
+            git_publish_branch
         ;;
 
         "elimina ramo" | "db")

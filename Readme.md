@@ -22,6 +22,7 @@ by `Flame0510`
 
 **`ramo`** | **`b`** --> **` git branch`**\
 **`crea ramo`** | **`ab`** --> **` crea nuova branch`**\
+**`pubblica ramo`** | **`pb`** --> **` pubblica branch`**\
 **`elimina ramo`** | **`db`** --> **` git branch -D`**\
 **`elimina ramo attuale`** | **`dcb`** --> **` elimina ramo attuale`**\
 
