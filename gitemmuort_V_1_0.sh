@@ -46,6 +46,8 @@ $(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) chec
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | rebase main | rbm $(tput setaf 5) > $(tput setaf 6) rebase da branch principale $(tput setaf 7)               |
 $(tput setaf 7) | pull rebase main | prbm $(tput setaf 5) > $(tput setaf 6) pull rebase da branch principale $(tput setaf 7)    |
+$(tput setaf 7) | rebase continue | rba $(tput setaf 5) > $(tput setaf 6) rebase continue $(tput setaf 7)                       |
+$(tput setaf 7) | rebase abort | rbc $(tput setaf 5) > $(tput setaf 6) rebase abort $(tput setaf 7)                             |
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                                        |
 $(tput setaf 7) |                                                                  |
@@ -334,6 +336,14 @@ do
 
         "pull rebase main" | "prbm")
             git_pull_rebase_master
+        ;;
+
+        "rebase continue" | "rbc")
+            git rebase --continue
+        ;;
+
+        "rebase abort" | "rba")
+            git rebase --abort
         ;;
 
         #pull
