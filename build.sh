@@ -1,0 +1,1 @@
+mkdir -p "dist" && cp gitemmuort_V_1_0.sh dist/gitemmuort_V_1_0.sh
