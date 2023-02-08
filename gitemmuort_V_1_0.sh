@@ -299,13 +299,32 @@ git_squash_last_commit() {
     fi
 }
 
-start
 
+#restart_console() {
+  #  break
+ #   console
+#}
+
+other_commands() {
+    
+    stty echo
+
+    #console
+
+   #printf "\n$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) %s " "%"
+}
+
+trap other_commands SIGINT
+
+console() {
+    
 
 while :
 do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
+    trap return INT
+
     case $command in
 
         "test")
@@ -470,9 +489,25 @@ do
             clear
             start
         ;;
+
+        #skip
+        "skip")
+            continue
+        ;;
+
+        #exit
+        "exit")
+            exit
+        ;;
         
         *)
             $command
         ;;
     esac
 done
+}
+
+
+start
+console
+
