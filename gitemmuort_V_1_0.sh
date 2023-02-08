@@ -193,19 +193,22 @@ git_delete_current_branch() {
 
 #CHECKOUT
 git_checkout() {
-    git branch
-    echo 
-    echo "Inserisci il nome del branch in cui vuoi spostarti (Lascia il campo vuoto per uscire):"
-    read -e branch_name
+    branches=($(git branch | awk '{print $1}'))
+    options=("${branches[@]}" "Esci")
 
-    if [ "$branch_name" ]
-    then
-        git checkout "$branch_name"        
-        echo
-        git branch
-    else
-        echo "Fatto"
-    fi
+    PS3="Seleziona una branch: "
+    select branch in "${options[@]}"
+    do
+        case $branch in
+            "Esci")
+                break
+                ;;
+            *)
+                git checkout "$branch"
+                break
+                ;;
+        esac
+    done
 }
 
 git_checkout_master() {
@@ -302,6 +305,11 @@ do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
+
+        "test")
+            git_selector
+        ;;
+        
         
         #clone
         "clona" | "cln")
