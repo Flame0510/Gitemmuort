@@ -213,6 +213,26 @@ git_checkout_master() {
     git checkout $master
 }
 
+#MERGE
+git_merge() {
+    branches=($(git branch | awk '{print $1}'))
+    options=("${branches[@]}" "Esci")
+
+    PS3="Seleziona una branch da mergiare: "
+    select branch in "${options[@]}"
+    do
+        case $branch in
+            "Esci")
+                break
+                ;;
+            *)
+                git merge "$branch"
+                break
+                ;;
+        esac
+    done
+}
+
 #REBASE
 git_rebase_master() {
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
@@ -328,6 +348,13 @@ do
         "vai al precedente" | "chl")
             git checkout -
         ;;
+
+
+        #merge
+        "merge" | "m")
+            git_merge
+        ;;
+
 
         #rebase
         "rebase main" | "rbm")
