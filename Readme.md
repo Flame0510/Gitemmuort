@@ -32,6 +32,10 @@ by `Flame0510`
 **`vai al principale`** | **`chm`** --> **` checkout ramo principale`**\
 **`vai al precedente`** | **`chl`** --> **` checkout ramo precedente`**\
 
+### Merge
+
+**`merge`** | **`m`** --> **`git merge`**\
+
 ### Rebase
 
 **`rebase main`** | **`rbm`** --> **` rebase da branch principale`**\

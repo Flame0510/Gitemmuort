@@ -44,6 +44,8 @@ $(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tp
 $(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)            |
 $(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) checkout ramo precedente $(tput setaf 7)            |
 $(tput setaf 7) |                                                                  |
+$(tput setaf 7) | merge | m $(tput setaf 5) > $(tput setaf 6) git merge                           $(tput setaf 7)               |
+$(tput setaf 7) |                                                                  |
 $(tput setaf 7) | rebase main | rbm $(tput setaf 5) > $(tput setaf 6) rebase da branch principale $(tput setaf 7)               |
 $(tput setaf 7) | pull rebase main | prbm $(tput setaf 5) > $(tput setaf 6) pull rebase da branch principale $(tput setaf 7)    |
 $(tput setaf 7) | rebase continue | rba $(tput setaf 5) > $(tput setaf 6) rebase continue $(tput setaf 7)                       |
