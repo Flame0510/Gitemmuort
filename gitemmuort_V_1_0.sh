@@ -164,19 +164,19 @@ git_add_branch() {
 
 git_publish_branch() {
     current_branch=`git branch --show current`
-
+    
     git push -u origin $current_branch
 }
 
 git_delete_branch() {
     git branch
-    echo 
+    echo
     echo "Inserisci il nome del branch che vuoi eliminare (Lascia il campo vuoto per uscire):"
     read -e branch_name
     
     if [ "$branch_name" ]
     then
-        git branch -D "$branch_name"        
+        git branch -D "$branch_name"
         echo
         git branch
     else
@@ -187,7 +187,7 @@ git_delete_branch() {
 git_delete_current_branch() {
     current_branch=`git branch --show current`
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
-
+    
     git checkout $master
     git branch -D $current_branch
 }
@@ -197,24 +197,24 @@ git_delete_current_branch() {
 git_checkout() {
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
-
+    
     PS3="Seleziona una branch: "
     select branch in "${options[@]}"
     do
         case $branch in
             "Esci")
                 break
-                ;;
+            ;;
             *)
                 git checkout "$branch"
                 break
-                ;;
+            ;;
         esac
     done
 }
 
 git_checkout_master() {
-    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
     git checkout $master
 }
 
@@ -222,30 +222,30 @@ git_checkout_master() {
 git_merge() {
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
-
+    
     PS3="Seleziona una branch da mergiare: "
     select branch in "${options[@]}"
     do
         case $branch in
             "Esci")
                 break
-                ;;
+            ;;
             *)
                 git merge "$branch"
                 break
-                ;;
+            ;;
         esac
     done
 }
 
 #REBASE
 git_rebase_master() {
-    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
     git rebase $master
 }
 
 git_pull_rebase_master() {
-    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
     git checkout $master
     git pull
     git checkout -
@@ -307,7 +307,7 @@ do
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
     
     case $command in
-
+        
         "test")
             git_selector
         ;;
@@ -323,66 +323,66 @@ do
             git fetch
         ;;
         
-
+        
         #branch
         "ramo" | "b")
             git branch
         ;;
-
+        
         "crea ramo" | "ab")
             git_add_branch
         ;;
-
+        
         "pubblica ramo" | "pb")
             git_publish_branch
         ;;
-
+        
         "elimina ramo" | "db")
             git_delete_branch
         ;;
-
+        
         "elimina ramo attuale" | "dcb")
             git_delete_current_branch
-        ;;        
-
-
+        ;;
+        
+        
         #checkout
         "vai a" | "ch")
             git_checkout
         ;;
-
+        
         "vai al principale" | "chm")
             git_checkout_master
         ;;
-
+        
         "vai al precedente" | "chl")
             git checkout -
         ;;
-
-
+        
+        
         #merge
         "merge" | "m")
             git_merge
         ;;
-
-
+        
+        
         #rebase
         "rebase main" | "rbm")
             git_rebase_master
         ;;
-
+        
         "pull rebase main" | "prbm")
             git_pull_rebase_master
         ;;
-
+        
         "rebase continue" | "rbc")
             git rebase --continue
         ;;
-
+        
         "rebase abort" | "rba")
             git rebase --abort
         ;;
-
+        
         #pull
         "piliamm" | "p")
             git pull
@@ -396,24 +396,24 @@ do
         "ammutta forte" | "puf")
             git push -f
         ;;
-
-
+        
+        
         #add - status
         "aggiungi" | "a")
             git add .
         ;;
-
+        
         "stato" | "st")
             git status
         ;;
         
-
+        
         #stash
         "aggiungi e sarba" | "as")
             git add .
             git stash
         ;;
-
+        
         "sarba" | "s")
             git stash
         ;;
@@ -421,8 +421,8 @@ do
         "sarba e metti" | "sa")
             git stash apply
         ;;
-
-
+        
+        
         #log
         "controlla" | "l")
             git log
@@ -434,7 +434,7 @@ do
             git_commmit
         ;;
         
-
+        
         #reset
         "resetta e sarba" | "rs")
             git_reset_soft
@@ -444,7 +444,7 @@ do
             git_reset_hard
         ;;
         
-
+        
         #squash
         "sq")
             git_squash
@@ -453,14 +453,14 @@ do
         "sql")
             git_squash_last_commit
         ;;
-
-
+        
+        
         #help
         "help" | "h")
             git_help
         ;;
-
-
+        
+        
         #restart
         "restart" | "r")
             start
