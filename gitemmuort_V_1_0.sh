@@ -1,9 +1,42 @@
 #!/bin/bash
 
+#==============================================================================
+# GITEMMUORT - Wrapper interattivo per Git in italiano napoletano
+# Versione: 1.0
+# Descrizione: Interfaccia user-friendly per comandi Git con alias in dialetto
+#==============================================================================
+
+# Se viene passato un argomento, cambia directory
 if [ "$1" ]
 then
-    cd "$($1)"
+    cd "$1"
 fi
+
+#==============================================================================
+# FUNZIONI DI UTILITÀ
+#==============================================================================
+
+# Verifica se si è in una repository Git
+# Ritorna 0 se si è in una repo Git, 1 altrimenti
+check_git_repo() {
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        show_error "Non sei in una repository Git!"
+        return 1
+    fi
+    return 0
+}
+
+# Reset dei colori del terminale
+# Ripristina i colori di default del terminale
+reset_colors() {
+    tput sgr0
+}
+
+# Mostra un messaggio di errore formattato
+# Parametro: $1 - Il messaggio di errore da visualizzare
+show_error() {
+    echo "$(tput setaf 1)Errore: $1$(tput sgr0)"
+}
 
 start() {
     echo "
@@ -18,12 +51,14 @@ $(tput setaf 5) \_____|_____|  |_|  $(tput setaf 6)|______|_|  |_|_|  |_|\____/ 
     
     echo "Percorso attuale: $(pwd)"
     echo
-
+    
     echo
     echo
     echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) oppure $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi)"
+    reset_colors
 }
 
+# Mostra il menu di aiuto con tutti i comandi disponibili
 git_help() {
     echo "
 $(tput setaf 7)  __________________________________________________________________
@@ -48,8 +83,8 @@ $(tput setaf 7) | merge | m $(tput setaf 5) > $(tput setaf 6) git merge         
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | rebase main | rbm $(tput setaf 5) > $(tput setaf 6) rebase da branch principale $(tput setaf 7)               |
 $(tput setaf 7) | pull rebase main | prbm $(tput setaf 5) > $(tput setaf 6) pull rebase da branch principale $(tput setaf 7)    |
-$(tput setaf 7) | rebase continue | rba $(tput setaf 5) > $(tput setaf 6) rebase continue $(tput setaf 7)                       |
-$(tput setaf 7) | rebase abort | rbc $(tput setaf 5) > $(tput setaf 6) rebase abort $(tput setaf 7)                             |
+$(tput setaf 7) | rebase continue | rbc $(tput setaf 5) > $(tput setaf 6) rebase continue $(tput setaf 7)                       |
+$(tput setaf 7) | rebase abort | rba $(tput setaf 5) > $(tput setaf 6) rebase abort $(tput setaf 7)                             |
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                                        |
 $(tput setaf 7) |                                                                  |
@@ -74,33 +109,44 @@ $(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)   
 $(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)                         |
 $(tput setaf 7) |                                                                  |
 $(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)                              |
+$(tput setaf 7) | pulisci e ricomincia | cr $(tput setaf 5) > $(tput setaf 6) clear e restart $(tput setaf 7)                   |
+$(tput setaf 7) | esci | q | exit $(tput setaf 5) > $(tput setaf 6) esci da gitemmuort $(tput setaf 7)                          |
 $(tput setaf 7) |__________________________________________________________________|
     "
 }
 
+#==============================================================================
+# FUNZIONI GIT - CLONE
+#==============================================================================
 
-#FUNCTIONS
+# Clona una repository Git da un URL fornito dall'utente
 git_clone() {
     echo "Inserisci il link della repository (Lascia il campo vuoto per uscire):"
     read -e git_url
     
     if [ "$git_url" ]
     then
-        git clone "$git_url"        
+        git clone "$git_url"
         echo
     else
         echo "Fatto"
     fi
 }
 
-git_commmit() {
+#==============================================================================
+# FUNZIONI GIT - COMMIT
+#==============================================================================
+
+# Esegue git add . seguito da git commit con un messaggio personalizzato
+git_commit() {
+    check_git_repo || return
     echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
     read -e commit_message
     
     if [ "$commit_message" ]
     then
-        git add .
-        git commit -m "$commit_message"
+        git add . || { show_error "Impossibile aggiungere i file"; return 1; }
+        git commit -m "$commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
         git log -2
         echo
     else
@@ -108,36 +154,22 @@ git_commmit() {
     fi
 }
 
+#==============================================================================
+# FUNZIONI GIT - RESET
+#==============================================================================
 
-#RESET
+# Esegue un reset soft, tornando indietro di N commit mantenendo le modifiche staged
 git_reset_soft() {
+    check_git_repo || return
     echo "Di quanti commit vuoi tornare indietro? (RESET SOFT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
-    if [[ "$commit_number" > 0 ]]
+    if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        git reset --soft HEAD~$commit_number
+        git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset soft"; return 1; }
         
         echo
-        echo "$(tput setaf 6) Reset SOFT EFFETTUATO"
-        echo
-        git log -2
-        echo
-    else
-        echo "Fatto"
-    fi   
-}
-
-git_reset_hard() {
-    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
-    read -e commit_number
-    
-    if [[ "$commit_number" > 0 ]]
-    then
-        git reset --hard HEAD~$commit_number
-        
-        echo
-        echo "$(tput setaf 6) Reset HARD EFFETTUATO"
+        echo "$(tput setaf 6) Reset SOFT EFFETTUATO$(tput sgr0)"
         echo
         git log -2
         echo
@@ -146,15 +178,39 @@ git_reset_hard() {
     fi
 }
 
+# Esegue un reset hard, tornando indietro di N commit e scartando tutte le modifiche
+git_reset_hard() {
+    check_git_repo || return
+    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    read -e commit_number
+    
+    if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
+    then
+        git reset --hard HEAD~$commit_number || { show_error "Impossibile effettuare il reset hard"; return 1; }
+        
+        echo
+        echo "$(tput setaf 6) Reset HARD EFFETTUATO$(tput sgr0)"
+        echo
+        git log -2
+        echo
+    else
+        echo "Fatto"
+    fi
+}
 
-#BRANCH
+#==============================================================================
+# FUNZIONI GIT - BRANCH MANAGEMENT
+#==============================================================================
+
+# Crea e fa checkout su un nuovo branch
 git_add_branch() {
+    check_git_repo || return
     echo "Inserisci il nome del nuovo branch (Lascia il campo vuoto per uscire):"
     read -e branch_name
     
     if [ "$branch_name" ]
     then
-        git checkout -b "$branch_name"        
+        git checkout -b "$branch_name" || { show_error "Impossibile creare il branch"; return 1; }
         echo
         git branch
     else
@@ -162,13 +218,22 @@ git_add_branch() {
     fi
 }
 
+# Pubblica il branch corrente su origin (git push -u origin <branch>)
 git_publish_branch() {
-    current_branch=`git branch --show current`
+    check_git_repo || return
+    current_branch=`git branch --show-current`
     
-    git push -u origin $current_branch
+    if [ -z "$current_branch" ]; then
+        show_error "Impossibile determinare il branch corrente"
+        return 1
+    fi
+    
+    git push -u origin $current_branch || { show_error "Impossibile pubblicare il branch"; return 1; }
 }
 
+# Elimina un branch specificato dall'utente (git branch -D)
 git_delete_branch() {
+    check_git_repo || return
     git branch
     echo
     echo "Inserisci il nome del branch che vuoi eliminare (Lascia il campo vuoto per uscire):"
@@ -176,7 +241,7 @@ git_delete_branch() {
     
     if [ "$branch_name" ]
     then
-        git branch -D "$branch_name"
+        git branch -D "$branch_name" || { show_error "Impossibile eliminare il branch"; return 1; }
         echo
         git branch
     else
@@ -184,17 +249,29 @@ git_delete_branch() {
     fi
 }
 
+# Elimina il branch corrente dopo essere passato al branch principale
+# Previene l'eliminazione del branch principale
 git_delete_current_branch() {
-    current_branch=`git branch --show current`
+    check_git_repo || return
+    current_branch=`git branch --show-current`
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
     
-    git checkout $master
-    git branch -D $current_branch
+    if [ "$current_branch" = "$master" ]; then
+        show_error "Non puoi eliminare il branch principale!"
+        return 1
+    fi
+    
+    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
+    git branch -D $current_branch || { show_error "Impossibile eliminare il branch"; return 1; }
 }
 
+#==============================================================================
+# FUNZIONI GIT - CHECKOUT
+#==============================================================================
 
-#CHECKOUT
+# Mostra un menu interattivo per selezionare e fare checkout su un branch
 git_checkout() {
+    check_git_repo || return
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
     
@@ -206,20 +283,27 @@ git_checkout() {
                 break
             ;;
             *)
-                git checkout "$branch"
+                git checkout "$branch" || { show_error "Impossibile fare checkout"; return 1; }
                 break
             ;;
         esac
     done
 }
 
+# Fa checkout sul branch principale (master/main) del repository
 git_checkout_master() {
-    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
-    git checkout $master
+    check_git_repo || return
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
 }
 
-#MERGE
+#==============================================================================
+# FUNZIONI GIT - MERGE
+#==============================================================================
+
+# Mostra un menu interattivo per selezionare e mergiare un branch
 git_merge() {
+    check_git_repo || return
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
     
@@ -231,248 +315,284 @@ git_merge() {
                 break
             ;;
             *)
-                git merge "$branch"
+                git merge "$branch" || { show_error "Impossibile effettuare il merge"; return 1; }
                 break
             ;;
         esac
     done
 }
 
-#REBASE
+#==============================================================================
+# FUNZIONI GIT - REBASE
+#==============================================================================
+
+# Esegue un rebase del branch corrente sul branch principale
 git_rebase_master() {
-    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
-    git rebase $master
+    check_git_repo || return
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git rebase $master || { show_error "Impossibile effettuare il rebase"; return 1; }
 }
 
+# Va sul branch principale, fa pull, torna indietro e fa rebase
+# Utile per aggiornare il branch corrente con le ultime modifiche del principale
 git_pull_rebase_master() {
-    master=`git show-branch -a | grep '\*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)~.*/\1/'`
-    git checkout $master
-    git pull
-    git checkout -
-    git rebase $master
+    check_git_repo || return
+    master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
+    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
+    git pull || { show_error "Impossibile fare pull"; return 1; }
+    git checkout - || { show_error "Impossibile tornare al branch precedente"; return 1; }
+    git rebase $master || { show_error "Impossibile effettuare il rebase"; return 1; }
 }
 
+#==============================================================================
+# FUNZIONI GIT - SQUASH
+#==============================================================================
 
-#SQUASH
+# Fa lo squash di N commit in uno solo con un nuovo messaggio
+# Utile per comprimere più commit in uno prima di fare push
 git_squash() {
+    check_git_repo || return
     echo "Di quanti commit vuoi fare lo squash? (SQUASH CON MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
-    if [[ "$commit_number" > 0 ]]
+    if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
         echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
         read -e commit_message
         
         if [ "$commit_message" ]
         then
-            git reset --soft HEAD~$commit_number
-            git add .
-            git commit -m "$commit_message"
+            git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset"; return 1; }
+            git add . || { show_error "Impossibile aggiungere i file"; return 1; }
+            git commit -m "$commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
             git log -2
             echo
+            echo "$(tput setaf 6) Squash effettuato$(tput sgr0)"
         else
             echo "Fatto"
         fi
-        
-        echo "$(tput setaf 6) Squash effettuato"
     else
         echo "Fatto"
     fi
 }
 
+# Fa lo squash di N commit mantenendo il messaggio dell'ultimo commit
 git_squash_last_commit() {
+    check_git_repo || return
     echo "Di quanti commit vuoi fare lo squash? (SQUASH CON L'ULTIMO MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
     read -e commit_number
     
     last_commit_message=$(git log -1 --pretty=%B)
     
-    if [[ "$commit_number" > 0 ]]
+    if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        git reset --soft HEAD~$commit_number
-        git add .
-        git commit -m "$last_commit_message"
+        git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset"; return 1; }
+        git add . || { show_error "Impossibile aggiungere i file"; return 1; }
+        git commit -m "$last_commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
         git log -2
         echo
-        echo "$(tput setaf 6) Squash effettuato"
+        echo "$(tput setaf 6) Squash effettuato$(tput sgr0)"
     else
         echo "Fatto"
     fi
 }
 
+#==============================================================================
+# INIZIALIZZAZIONE E LOOP PRINCIPALE
+#==============================================================================
+
+# Avvia il programma mostrando il banner
 start
 
-
+# Loop infinito che legge e processa i comandi dell'utente
 while :
 do
+    # Legge il comando con prompt colorato
     read -rep "$(tput setaf 5)$(whoami)$(tput setaf 7)_$(tput setaf 6)gitemmuort$(tput setaf 7) % " command
+    reset_colors
     
+    # Switch case per processare i vari comandi
     case $command in
         
-        "test")
-            git_selector
-        ;;
-        
-        
-        #clone
+        # CLONE - Clona una repository
         "clona" | "cln")
             git_clone
         ;;
         
-        #fetch
+        # FETCH - Aggiorna i riferimenti remoti
         "riallinea" | "f")
-            git fetch
+            check_git_repo && git fetch
         ;;
         
-        
-        #branch
+        # BRANCH - Visualizza tutti i branch
         "ramo" | "b")
-            git branch
+            check_git_repo && git branch
         ;;
         
+        # Crea un nuovo branch
         "crea ramo" | "ab")
             git_add_branch
         ;;
         
+        # Pubblica il branch corrente su origin
         "pubblica ramo" | "pb")
             git_publish_branch
         ;;
         
+        # Elimina un branch specifico
         "elimina ramo" | "db")
             git_delete_branch
         ;;
         
+        # Elimina il branch corrente
         "elimina ramo attuale" | "dcb")
             git_delete_current_branch
         ;;
         
-        
-        #checkout
+        # CHECKOUT - Cambia branch tramite menu interattivo
         "vai a" | "ch")
             git_checkout
         ;;
         
+        # Passa al branch principale (master/main)
         "vai al principale" | "chm")
             git_checkout_master
         ;;
         
+        # Torna al branch precedente
         "vai al precedente" | "chl")
-            git checkout -
+            check_git_repo && git checkout -
         ;;
         
-        
-        #merge
+        # MERGE - Mergia un branch nel corrente
         "merge" | "m")
             git_merge
         ;;
         
-        
-        #rebase
+        # REBASE - Fa rebase dal branch principale
         "rebase main" | "rbm")
             git_rebase_master
         ;;
         
+        # Pull + Rebase dal branch principale
         "pull rebase main" | "prbm")
             git_pull_rebase_master
         ;;
         
+        # Continua un rebase dopo aver risolto i conflitti
         "rebase continue" | "rbc")
-            git rebase --continue
+            check_git_repo && git rebase --continue
         ;;
         
+        # Annulla un rebase in corso
         "rebase abort" | "rba")
-            git rebase --abort
+            check_git_repo && git rebase --abort
         ;;
         
-        #pull
+        # PULL - Scarica e integra le modifiche dal remoto
         "piliamm" | "p")
-            git pull
+            check_git_repo && git pull
         ;;
         
-        #push
+        # PUSH - Carica le modifiche sul remoto
         "ammutta" | "pu")
-            git push
+            check_git_repo && git push
         ;;
         
+        # Push forzato (attenzione: sovrascrive la storia remota)
         "ammutta forte" | "puf")
-            git push -f
+            check_git_repo && git push -f
         ;;
         
-        
-        #add - status
+        # ADD - Aggiunge tutti i file modificati allo stage
         "aggiungi" | "a")
-            git add .
+            check_git_repo && git add .
         ;;
         
+        # STATUS - Mostra lo stato dei file
         "stato" | "st")
-            git status
+            check_git_repo && git status
         ;;
         
-        
-        #stash
+        # STASH - Aggiunge i file e li salva nello stash
         "aggiungi e sarba" | "as")
-            git add .
-            git stash
+            if check_git_repo; then
+                git add .
+                git stash
+            fi
         ;;
         
+        # Salva le modifiche correnti nello stash
         "sarba" | "s")
-            git stash
+            check_git_repo && git stash
         ;;
         
+        # Applica le modifiche salvate nello stash
         "sarba e metti" | "sa")
-            git stash apply
+            check_git_repo && git stash apply
         ;;
         
-        
-        #log
+        # LOG - Visualizza la cronologia dei commit
         "controlla" | "l")
-            git log
+            check_git_repo && git log
         ;;
         
-        
-        #commit
+        # COMMIT - Aggiunge tutti i file e crea un commit
         "commetti" | "c")
-            git_commmit
+            git_commit
         ;;
         
-        
-        #reset
+        # RESET SOFT - Torna indietro di N commit mantenendo le modifiche
         "resetta e sarba" | "rs")
             git_reset_soft
         ;;
         
+        # RESET HARD - Torna indietro di N commit scartando tutto
         "resetta tutt cos" | "rh")
             git_reset_hard
         ;;
         
-        
-        #squash
+        # SQUASH - Comprime N commit in uno con nuovo messaggio
         "sq")
             git_squash
         ;;
         
+        # SQUASH - Comprime N commit mantenendo l'ultimo messaggio
         "sql")
             git_squash_last_commit
         ;;
         
-        
-        #help
+        # HELP - Mostra il menu di aiuto
         "help" | "h")
             git_help
         ;;
         
-        
-        #restart
+        # RESTART - Riavvia il programma mostrando di nuovo il banner
         "restart" | "r")
             start
         ;;
         
+        # CLEAR + RESTART - Pulisce lo schermo e riavvia
         "pulisci e ricomincia" | "cr")
             clear
             start
         ;;
         
+        # EXIT - Esce dal programma
+        "esci" | "exit" | "q")
+            echo "$(tput setaf 6)Arrivederci!$(tput sgr0)"
+            exit 0
+        ;;
+        
+        # Comando vuoto - Ignora e continua
+        "")
+            # Non fare nulla
+        ;;
+        
+        # Comando non riconosciuto - Mostra messaggio di errore
         *)
-            $command
+            show_error "Comando non riconosciuto: '$command'"
+            echo "Digita $(tput setaf 6)'help'$(tput setaf 7) o $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi$(tput sgr0)"
         ;;
     esac
 done
