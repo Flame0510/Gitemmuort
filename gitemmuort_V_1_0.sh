@@ -20,7 +20,7 @@ fi
 # Ritorna 0 se si è in una repo Git, 1 altrimenti
 check_git_repo() {
     if ! git rev-parse --git-dir > /dev/null 2>&1; then
-        show_error "Non sei in una repository Git!"
+        show_error "Chistu nun è territorio nosto! (Non sei in una repository Git!)"
         return 1
     fi
     return 0
@@ -35,7 +35,7 @@ reset_colors() {
 # Mostra un messaggio di errore formattato
 # Parametro: $1 - Il messaggio di errore da visualizzare
 show_error() {
-    echo "$(tput setaf 1)Errore: $1$(tput sgr0)"
+    echo "$(tput setaf 1)✘ $1$(tput sgr0)"
 }
 
 start() {
@@ -49,69 +49,83 @@ $(tput setaf 5) \_____|_____|  |_|  $(tput setaf 6)|______|_|  |_|_|  |_|\____/ 
     "
     echo "$(tput setaf 7)"
     
-    echo "Percorso attuale: $(pwd)"
+    echo "Addò stongo mo (Percorso attuale): $(pwd)"
     echo
     
     echo
     echo
-    echo "Inserisci un comando (digita $(tput setaf 6)'help'$(tput setaf 7) oppure $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi)"
+    echo "Che vuo fa'? (Cosa vuoi fare?) - Digita $(tput setaf 6)'help'$(tput setaf 7) o $(tput setaf 6)'h'$(tput setaf 7) p'a lista"
     reset_colors
 }
 
 # Mostra il menu di aiuto con tutti i comandi disponibili
 git_help() {
     echo "
-$(tput setaf 7)  __________________________________________________________________
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | $(tput setaf 5)COMMANDS: $(tput setaf 7)                                                       |
-$(tput setaf 7) |__________________________________________________________________|
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | clona | cln $(tput setaf 5) > $(tput setaf 6) git clone $(tput setaf 7)                                       |
-$(tput setaf 7) | riallinea | f $(tput setaf 5) > $(tput setaf 6) git fetch $(tput setaf 7)                                     |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | ramo | b $(tput setaf 5) > $(tput setaf 6) git branch $(tput setaf 7)                                         |
-$(tput setaf 7) | crea ramo | ab $(tput setaf 5) > $(tput setaf 6) crea nuova branch $(tput setaf 7)                            |
-$(tput setaf 7) | pubblica ramo | pb $(tput setaf 5) > $(tput setaf 6) pubblica branch $(tput setaf 7)                          |
-$(tput setaf 7) | elimina ramo | db $(tput setaf 5) > $(tput setaf 6) git branch -D $(tput setaf 7)                             |
-$(tput setaf 7) | elimina ramo attuale | dcb $(tput setaf 5) > $(tput setaf 6) elimina ramo attuale $(tput setaf 7)             |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | vai a | ch $(tput setaf 5) > $(tput setaf 6) git checkout $(tput setaf 7)                                     |
-$(tput setaf 7) | vai al principale | chm $(tput setaf 5) > $(tput setaf 6) checkout ramo principale $(tput setaf 7)            |
-$(tput setaf 7) | vai al precedente | chl $(tput setaf 5) > $(tput setaf 6) checkout ramo precedente $(tput setaf 7)            |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | merge | m $(tput setaf 5) > $(tput setaf 6) git merge                           $(tput setaf 7)               |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | rebase main | rbm $(tput setaf 5) > $(tput setaf 6) rebase da branch principale $(tput setaf 7)               |
-$(tput setaf 7) | pull rebase main | prbm $(tput setaf 5) > $(tput setaf 6) pull rebase da branch principale $(tput setaf 7)    |
-$(tput setaf 7) | rebase continue | rbc $(tput setaf 5) > $(tput setaf 6) rebase continue $(tput setaf 7)                       |
-$(tput setaf 7) | rebase abort | rba $(tput setaf 5) > $(tput setaf 6) rebase abort $(tput setaf 7)                             |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | piliamm | p $(tput setaf 5) > $(tput setaf 6) git pull $(tput setaf 7)                                        |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | ammutta | pu $(tput setaf 5) > $(tput setaf 6) git push $(tput setaf 7)                                       |
-$(tput setaf 7) | ammutta forte | puf $(tput setaf 5) > $(tput setaf 6) git push -f $(tput setaf 7)                             |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | aggiungi | a $(tput setaf 5) > $(tput setaf 6) git add . $(tput setaf 7)                                      |
-$(tput setaf 7) | stato | st $(tput setaf 5) > $(tput setaf 6) git status $(tput setaf 7)                                       |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | aggiungi e sarba | as $(tput setaf 5) > $(tput setaf 6) git add . + git stash $(tput setaf 7)                 |
-$(tput setaf 7) | sarba | s $(tput setaf 5) > $(tput setaf 6) git stash $(tput setaf 7)                                         |
-$(tput setaf 7) | sarba e metti | sa$(tput setaf 5) > $(tput setaf 6) git stash apply $(tput setaf 7)                           |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | controlla | l $(tput setaf 5) > $(tput setaf 6) git log $(tput setaf 7)                                       |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | commetti | c $(tput setaf 5) > $(tput setaf 6) git commit -m $(tput setaf 7)                                  |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | resetta e sarba | rs $(tput setaf 5) > $(tput setaf 6) git reset --soft $(tput setaf 7)                       |
-$(tput setaf 7) | resetta tutt cos | rh $(tput setaf 5) > $(tput setaf 6) git reset --hard $(tput setaf 7)                      |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | sq $(tput setaf 5) > $(tput setaf 6) squash $(tput setaf 7)                                                   |
-$(tput setaf 7) | sql $(tput setaf 5) > $(tput setaf 6) squash with last commit message $(tput setaf 7)                         |
-$(tput setaf 7) |                                                                  |
-$(tput setaf 7) | restart | r $(tput setaf 5) > $(tput setaf 6) riavvia gitemmuort $(tput setaf 7)                              |
-$(tput setaf 7) | pulisci e ricomincia | cr $(tput setaf 5) > $(tput setaf 6) clear e restart $(tput setaf 7)                   |
-$(tput setaf 7) | esci | q | exit $(tput setaf 5) > $(tput setaf 6) esci da gitemmuort $(tput setaf 7)                          |
-$(tput setaf 7) |__________________________________________________________________|
+$(tput setaf 6)  ╔══════════════════════════════════════════════════════════════════════════╗
+$(tput setaf 6)  ║ $(tput setaf 5)🔫 GITEMMUORT - 'O SISTEMA P' GIT$(tput setaf 6)                                        ║
+$(tput setaf 6)  ║ $(tput setaf 7)Ogni comando ha 2 versioni: $(tput setaf 1)Napoletano$(tput setaf 7) (divertente) | $(tput setaf 2)Veloce$(tput setaf 7) (1-2 char)$(tput setaf 6) ║
+$(tput setaf 6)  ╚══════════════════════════════════════════════════════════════════════════╝
+
+$(tput setaf 7)  📦 $(tput setaf 5)CLONE & FETCH$(tput setaf 7)
+    $(tput setaf 1)pigliat 'a roba$(tput setaf 7) | $(tput setaf 2)cln$(tput setaf 7) → git clone
+    $(tput setaf 1)controlla 'o giro$(tput setaf 7) | $(tput setaf 2)f$(tput setaf 7) → git fetch
+
+$(tput setaf 7)  🏢 $(tput setaf 5)BRANCH (I CLAN)$(tput setaf 7)
+    $(tput setaf 1)vir 'e clan$(tput setaf 7) | $(tput setaf 2)b$(tput setaf 7) → git branch
+    $(tput setaf 1)fonda nu clan$(tput setaf 7) | $(tput setaf 2)ab$(tput setaf 7) → crea nuovo branch
+    $(tput setaf 1)fai sapé a tutt$(tput setaf 7) | $(tput setaf 2)pb$(tput setaf 7) → pubblica branch
+    $(tput setaf 1)leva 'o clan$(tput setaf 7) | $(tput setaf 2)db$(tput setaf 7) → elimina branch
+    $(tput setaf 1)sciogliere stu clan$(tput setaf 7) | $(tput setaf 2)dcb$(tput setaf 7) → elimina corrente
+
+$(tput setaf 7)  🔄 $(tput setaf 5)CHECKOUT (CAMBIO CLAN)$(tput setaf 7)
+    $(tput setaf 1)passa a n'atu clan$(tput setaf 7) | $(tput setaf 2)ch$(tput setaf 7) → checkout (menu)
+    $(tput setaf 1)torna dò sistema$(tput setaf 7) | $(tput setaf 2)chm$(tput setaf 7) → master/main
+    $(tput setaf 1)torna arè$(tput setaf 7) | $(tput setaf 2)chl$(tput setaf 7) → branch precedente
+
+$(tput setaf 7)  🤝 $(tput setaf 5)MERGE & REBASE$(tput setaf 7)
+    $(tput setaf 1)alleat 'e clan$(tput setaf 7) | $(tput setaf 2)m$(tput setaf 7) → git merge
+    $(tput setaf 1)mettit sottò sistem$(tput setaf 7) | $(tput setaf 2)rbm$(tput setaf 7) → rebase da master
+    $(tput setaf 1)aggiorna e mettit sott$(tput setaf 7) | $(tput setaf 2)prbm$(tput setaf 7) → pull+rebase
+    $(tput setaf 1)vai avanti$(tput setaf 7) | $(tput setaf 2)rbc$(tput setaf 7) → continua rebase
+    $(tput setaf 1)ferma tutt$(tput setaf 7) | $(tput setaf 2)rba$(tput setaf 7) → annulla rebase
+
+$(tput setaf 7)  📤 $(tput setaf 5)PUSH & PULL$(tput setaf 7)
+    $(tput setaf 1)pigl 'a merce$(tput setaf 7) | $(tput setaf 2)p$(tput setaf 7) → git pull
+    $(tput setaf 1)manna 'a merce$(tput setaf 7) | $(tput setaf 2)pu$(tput setaf 7) → git push
+    $(tput setaf 1)spacca tutt$(tput setaf 7) | $(tput setaf 2)puf$(tput setaf 7) → git push -f $(tput setaf 1)⚠️$(tput setaf 7)
+
+$(tput setaf 7)  📝 $(tput setaf 5)ADD, STATUS & COMMIT$(tput setaf 7)
+    $(tput setaf 1)mett dintò sacc$(tput setaf 7) | $(tput setaf 2)a$(tput setaf 7) → git add .
+    $(tput setaf 1)comm stann 'e ccose$(tput setaf 7) | $(tput setaf 2)st$(tput setaf 7) → git status
+    $(tput setaf 1)segna 'a moviment$(tput setaf 7) | $(tput setaf 2)c$(tput setaf 7) → add + commit
+
+$(tput setaf 7)  💾 $(tput setaf 5)STASH$(tput setaf 7)
+    $(tput setaf 1)scunne 'a roba$(tput setaf 7) | $(tput setaf 2)as$(tput setaf 7) → add + stash
+    $(tput setaf 1)scunne$(tput setaf 7) | $(tput setaf 2)s$(tput setaf 7) → git stash
+    $(tput setaf 1)tira for 'a roba$(tput setaf 7) | $(tput setaf 2)sa$(tput setaf 7) → stash apply
+
+$(tput setaf 7)  📜 $(tput setaf 5)LOG & HISTORY$(tput setaf 7)
+    $(tput setaf 1)vir 'a storia$(tput setaf 7) | $(tput setaf 2)l$(tput setaf 7) → git log
+
+$(tput setaf 7)  ⏮️  $(tput setaf 5)RESET$(tput setaf 7)
+    $(tput setaf 1)torna arrèt accort$(tput setaf 7) | $(tput setaf 2)rs$(tput setaf 7) → reset --soft
+    $(tput setaf 1)brucia tutt cos$(tput setaf 7) | $(tput setaf 3)resetta tutt cos$(tput setaf 7) | $(tput setaf 2)rh$(tput setaf 7) → reset --hard $(tput setaf 1)⚠️$(tput setaf 7)
+
+$(tput setaf 7)  🗜️  $(tput setaf 5)SQUASH$(tput setaf 7)
+    $(tput setaf 1)accumpagna 'e cose$(tput setaf 7) | $(tput setaf 2)sq$(tput setaf 7) → squash N commit (nuovo messaggio)
+    $(tput setaf 1)accumpagna accussì$(tput setaf 7) | $(tput setaf 2)sql$(tput setaf 7) → squash (mantieni ultimo messaggio)
+
+$(tput setaf 7)  🔧 $(tput setaf 5)UTILITÀ$(tput setaf 7)
+    $(tput setaf 3)help$(tput setaf 7) | $(tput setaf 2)h$(tput setaf 7) → questo menu
+    $(tput setaf 3)restart$(tput setaf 7) | $(tput setaf 2)r$(tput setaf 7) → riavvia banner
+    $(tput setaf 3)pulisci e ricomincia$(tput setaf 7) | $(tput setaf 2)cr$(tput setaf 7) → clear + restart
+    $(tput setaf 3)esci$(tput setaf 7) / $(tput setaf 3)exit$(tput setaf 7) | $(tput setaf 2)q$(tput setaf 7) → esci
+
+$(tput setaf 6)  ═══════════════════════════════════════════════════════════════════════════
+$(tput setaf 3)  💡 TIP: Comandi $(tput setaf 2)brevi$(tput setaf 3) per velocità, comandi $(tput setaf 1)Gomorra$(tput setaf 3) per divertimento!
+$(tput setaf 3)  🎭 Reset hard mantiene anche "$(tput setaf 7)resetta tutt cos$(tput setaf 3)" per sicurezza 🔫
+$(tput setaf 6)  ═══════════════════════════════════════════════════════════════════════════
+$(tput sgr0)
     "
 }
 
@@ -121,7 +135,7 @@ $(tput setaf 7) |_______________________________________________________________
 
 # Clona una repository Git da un URL fornito dall'utente
 git_clone() {
-    echo "Inserisci il link della repository (Lascia il campo vuoto per uscire):"
+    echo "Damm 'o link d'a repo (Dammi il link della repository) [vuoto p'ascì]:"
     read -e git_url
     
     if [ "$git_url" ]
@@ -129,7 +143,7 @@ git_clone() {
         git clone "$git_url"
         echo
     else
-        echo "Fatto"
+        echo "Jamm bello, nient 'a fa"
     fi
 }
 
@@ -140,17 +154,17 @@ git_clone() {
 # Esegue git add . seguito da git commit con un messaggio personalizzato
 git_commit() {
     check_git_repo || return
-    echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
+    echo "Che vuò scriv p'sta moviment? (Che vuoi scrivere per questa modifica?) [vuoto p'ascì]:"
     read -e commit_message
     
     if [ "$commit_message" ]
     then
-        git add . || { show_error "Impossibile aggiungere i file"; return 1; }
-        git commit -m "$commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
+        git add . || { show_error "Nun pozz mett 'e file! (Impossibile aggiungere i file!)"; return 1; }
+        git commit -m "$commit_message" || { show_error "'A moviment nun s'è registrata! (Il commit non è riuscito!)"; return 1; }
         git log -2
         echo
     else
-        echo "Fatto"
+        echo "Va buon, nisciun moviment"
     fi
 }
 
@@ -161,40 +175,40 @@ git_commit() {
 # Esegue un reset soft, tornando indietro di N commit mantenendo le modifiche staged
 git_reset_soft() {
     check_git_repo || return
-    echo "Di quanti commit vuoi tornare indietro? (RESET SOFT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Quante moviment vuò caccià arrèt? (Quanti commit indietro?) [RESET SOFT - Digita $(tput setaf 6)0$(tput setaf 7) p'ascì]"
     read -e commit_number
     
     if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset soft"; return 1; }
+        git reset --soft HEAD~$commit_number || { show_error "Nun pozz turnà arrèt! (Impossibile fare il reset!)"; return 1; }
         
         echo
-        echo "$(tput setaf 6) Reset SOFT EFFETTUATO$(tput sgr0)"
+        echo "$(tput setaf 6)✓ Turnato arrèt accumpanat (Reset soft effettuato)$(tput sgr0)"
         echo
         git log -2
         echo
     else
-        echo "Fatto"
+        echo "Statt accumpanat"
     fi
 }
 
 # Esegue un reset hard, tornando indietro di N commit e scartando tutte le modifiche
 git_reset_hard() {
     check_git_repo || return
-    echo "Di quanti commit vuoi tornare indietro? (RESET HARD) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Quante moviment vuò bruciare? (Quanti commit cancellare?) [RESET HARD - Digita $(tput setaf 6)0$(tput setaf 7) p'ascì]"
     read -e commit_number
     
     if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        git reset --hard HEAD~$commit_number || { show_error "Impossibile effettuare il reset hard"; return 1; }
+        git reset --hard HEAD~$commit_number || { show_error "Nun pozz bruciare tutt cos! (Impossibile fare il reset!)"; return 1; }
         
         echo
-        echo "$(tput setaf 6) Reset HARD EFFETTUATO$(tput sgr0)"
+        echo "$(tput setaf 6)✓ Tutt cos è bruciato! (Reset hard effettuato!)$(tput sgr0)"
         echo
         git log -2
         echo
     else
-        echo "Fatto"
+        echo "Statt accumpanat"
     fi
 }
 
@@ -205,16 +219,16 @@ git_reset_hard() {
 # Crea e fa checkout su un nuovo branch
 git_add_branch() {
     check_git_repo || return
-    echo "Inserisci il nome del nuovo branch (Lascia il campo vuoto per uscire):"
+    echo "Comm s'adda chiamm 'o nuovo clan? (Come si deve chiamare il nuovo branch?) [vuoto p'ascì]:"
     read -e branch_name
     
     if [ "$branch_name" ]
     then
-        git checkout -b "$branch_name" || { show_error "Impossibile creare il branch"; return 1; }
+        git checkout -b "$branch_name" || { show_error "Nun pozz fundà stu clan! (Impossibile creare il branch!)"; return 1; }
         echo
         git branch
     else
-        echo "Fatto"
+        echo "Nisciun clan fondato"
     fi
 }
 
@@ -224,11 +238,11 @@ git_publish_branch() {
     current_branch=`git branch --show-current`
     
     if [ -z "$current_branch" ]; then
-        show_error "Impossibile determinare il branch corrente"
+        show_error "Nun saccio addò stongo! (Impossibile determinare il branch corrente!)"
         return 1
     fi
     
-    git push -u origin $current_branch || { show_error "Impossibile pubblicare il branch"; return 1; }
+    git push -u origin $current_branch || { show_error "Nun pozz fa' sapé a nisciuno! (Impossibile pubblicare il branch!)"; return 1; }
 }
 
 # Elimina un branch specificato dall'utente (git branch -D)
@@ -236,16 +250,16 @@ git_delete_branch() {
     check_git_repo || return
     git branch
     echo
-    echo "Inserisci il nome del branch che vuoi eliminare (Lascia il campo vuoto per uscire):"
+    echo "Quale clan vuò sciogl? (Quale branch vuoi eliminare?) [vuoto p'ascì]:"
     read -e branch_name
     
     if [ "$branch_name" ]
     then
-        git branch -D "$branch_name" || { show_error "Impossibile eliminare il branch"; return 1; }
+        git branch -D "$branch_name" || { show_error "Nun pozz sciogl stu clan! (Impossibile eliminare il branch!)"; return 1; }
         echo
         git branch
     else
-        echo "Fatto"
+        echo "Nisciun clan sciolto"
     fi
 }
 
@@ -257,12 +271,12 @@ git_delete_current_branch() {
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
     
     if [ "$current_branch" = "$master" ]; then
-        show_error "Non puoi eliminare il branch principale!"
+        show_error "'O sistema nun se tocca! (Il branch principale non si elimina!)"
         return 1
     fi
     
-    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
-    git branch -D $current_branch || { show_error "Impossibile eliminare il branch"; return 1; }
+    git checkout $master || { show_error "Nun pozz turnà dò sistema! (Impossibile tornare al master!)"; return 1; }
+    git branch -D $current_branch || { show_error "Nun pozz sciogl stu clan! (Impossibile eliminare il branch!)"; return 1; }
 }
 
 #==============================================================================
@@ -275,6 +289,7 @@ git_checkout() {
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
     
+    # Menu interattivo
     PS3="Seleziona una branch: "
     select branch in "${options[@]}"
     do
@@ -283,7 +298,7 @@ git_checkout() {
                 break
             ;;
             *)
-                git checkout "$branch" || { show_error "Impossibile fare checkout"; return 1; }
+                git checkout "$branch" || { show_error "Nun pozz passà a chillu clan! (Impossibile cambiare branch!)"; return 1; }
                 break
             ;;
         esac
@@ -294,7 +309,7 @@ git_checkout() {
 git_checkout_master() {
     check_git_repo || return
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
-    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
+    git checkout $master || { show_error "Nun pozz turnà dò sistema! (Impossibile tornare al master!)"; return 1; }
 }
 
 #==============================================================================
@@ -307,6 +322,7 @@ git_merge() {
     branches=($(git branch | awk '{print $1}'))
     options=("${branches[@]}" "Esci")
     
+    # Menu interattivo
     PS3="Seleziona una branch da mergiare: "
     select branch in "${options[@]}"
     do
@@ -315,7 +331,7 @@ git_merge() {
                 break
             ;;
             *)
-                git merge "$branch" || { show_error "Impossibile effettuare il merge"; return 1; }
+                git merge "$branch" || { show_error "Nun pozz alleà sti clan! (Impossibile fare il merge!)"; return 1; }
                 break
             ;;
         esac
@@ -330,7 +346,7 @@ git_merge() {
 git_rebase_master() {
     check_git_repo || return
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
-    git rebase $master || { show_error "Impossibile effettuare il rebase"; return 1; }
+    git rebase $master || { show_error "Nun pozz mett sottò sistema! (Impossibile fare il rebase!)"; return 1; }
 }
 
 # Va sul branch principale, fa pull, torna indietro e fa rebase
@@ -338,10 +354,21 @@ git_rebase_master() {
 git_pull_rebase_master() {
     check_git_repo || return
     master=`git remote show origin | sed -n '/HEAD branch/s/.*: //p'`
-    git checkout $master || { show_error "Impossibile fare checkout"; return 1; }
-    git pull || { show_error "Impossibile fare pull"; return 1; }
-    git checkout - || { show_error "Impossibile tornare al branch precedente"; return 1; }
-    git rebase $master || { show_error "Impossibile effettuare il rebase"; return 1; }
+    git checkout $master || { show_error "Nun pozz turnà dò sistema! (Impossibile tornare al master!)"; return 1; }
+    git pull || { show_error "Nun pozz piglià 'a merce! (Impossibile fare pull!)"; return 1; }
+    git checkout - || { show_error "Nun pozz turnà addò stevo! (Impossibile tornare al branch precedente!)"; return 1; }
+    git rebase $master || { show_error "Nun pozz mett sottò sistema! (Impossibile fare il rebase!)"; return 1; }
+}
+
+#==============================================================================
+# FUNZIONI GIT - PUSH & PULL
+#==============================================================================
+
+# Push forzato con messaggio di avviso prima e dopo l'operazione
+git_push_force() {
+    check_git_repo || return
+    echo "$(tput setaf 1)⚠️  Stai facenn nu push forzato! (Stai per fare un push forzato!)$(tput sgr0)"
+    git push -f && echo "$(tput setaf 3)✓ Tutto spaccato! (Push forzato completato!)$(tput sgr0)"
 }
 
 #==============================================================================
@@ -352,48 +379,48 @@ git_pull_rebase_master() {
 # Utile per comprimere più commit in uno prima di fare push
 git_squash() {
     check_git_repo || return
-    echo "Di quanti commit vuoi fare lo squash? (SQUASH CON MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Quante moviment vuò accumpagnà? (Quanti commit unire?) [SQUASH - Digita $(tput setaf 6)0$(tput setaf 7) p'ascì]"
     read -e commit_number
     
     if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        echo "Inserisci il messaggio del commit (Lascia il campo vuoto per uscire):"
+        echo "Che vuò scriv p'sta moviment? (Che messaggio vuoi?) [vuoto p'ascì]:"
         read -e commit_message
         
         if [ "$commit_message" ]
         then
-            git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset"; return 1; }
-            git add . || { show_error "Impossibile aggiungere i file"; return 1; }
-            git commit -m "$commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
+            git reset --soft HEAD~$commit_number || { show_error "Nun pozz turnà arrèt! (Impossibile fare il reset!)"; return 1; }
+            git add . || { show_error "Nun pozz mett 'e file! (Impossibile aggiungere i file!)"; return 1; }
+            git commit -m "$commit_message" || { show_error "'A moviment nun s'è registrata! (Il commit non è riuscito!)"; return 1; }
             git log -2
             echo
-            echo "$(tput setaf 6) Squash effettuato$(tput sgr0)"
+            echo "$(tput setaf 6)✓ Tutt cos accumpagnato! (Squash effettuato!)$(tput sgr0)"
         else
-            echo "Fatto"
+            echo "Nient 'a accumpagnà"
         fi
     else
-        echo "Fatto"
+        echo "Nient 'a accumpagnà"
     fi
 }
 
 # Fa lo squash di N commit mantenendo il messaggio dell'ultimo commit
 git_squash_last_commit() {
     check_git_repo || return
-    echo "Di quanti commit vuoi fare lo squash? (SQUASH CON L'ULTIMO MESSAGGIO DI COMMIT) [Digita $(tput setaf 6)0$(tput setaf 7) per uscire]"
+    echo "Quante moviment vuò accumpagnà? (Quanti commit unire?) [SQUASH CON ULTIMO MESSAGGIO - Digita $(tput setaf 6)0$(tput setaf 7) p'ascì]"
     read -e commit_number
     
     last_commit_message=$(git log -1 --pretty=%B)
     
     if [[ "$commit_number" =~ ^[0-9]+$ ]] && [[ "$commit_number" -gt 0 ]]
     then
-        git reset --soft HEAD~$commit_number || { show_error "Impossibile effettuare il reset"; return 1; }
-        git add . || { show_error "Impossibile aggiungere i file"; return 1; }
-        git commit -m "$last_commit_message" || { show_error "Impossibile effettuare il commit"; return 1; }
+        git reset --soft HEAD~$commit_number || { show_error "Nun pozz turnà arrèt! (Impossibile fare il reset!)"; return 1; }
+        git add . || { show_error "Nun pozz mett 'e file! (Impossibile aggiungere i file!)"; return 1; }
+        git commit -m "$last_commit_message" || { show_error "'A moviment nun s'è registrata! (Il commit non è riuscito!)"; return 1; }
         git log -2
         echo
-        echo "$(tput setaf 6) Squash effettuato$(tput sgr0)"
+        echo "$(tput setaf 6)✓ Tutt cos accumpagnato! (Squash effettuato!)$(tput sgr0)"
     else
-        echo "Fatto"
+        echo "Nient 'a accumpagnà"
     fi
 }
 
@@ -415,150 +442,150 @@ do
     case $command in
         
         # CLONE - Clona una repository
-        "clona" | "cln")
+        "pigliat 'a roba" | "cln")
             git_clone
         ;;
         
         # FETCH - Aggiorna i riferimenti remoti
-        "riallinea" | "f")
+        "controlla 'o giro" | "f")
             check_git_repo && git fetch
         ;;
         
         # BRANCH - Visualizza tutti i branch
-        "ramo" | "b")
+        "vir 'e clan" | "b")
             check_git_repo && git branch
         ;;
         
         # Crea un nuovo branch
-        "crea ramo" | "ab")
+        "fonda nu clan" | "ab")
             git_add_branch
         ;;
         
         # Pubblica il branch corrente su origin
-        "pubblica ramo" | "pb")
+        "fai sapé a tutt" | "pb")
             git_publish_branch
         ;;
         
         # Elimina un branch specifico
-        "elimina ramo" | "db")
+        "leva 'o clan" | "db")
             git_delete_branch
         ;;
         
         # Elimina il branch corrente
-        "elimina ramo attuale" | "dcb")
+        "sciogliere stu clan" | "dcb")
             git_delete_current_branch
         ;;
         
         # CHECKOUT - Cambia branch tramite menu interattivo
-        "vai a" | "ch")
+        "passa a n'atu clan" | "ch")
             git_checkout
         ;;
         
         # Passa al branch principale (master/main)
-        "vai al principale" | "chm")
+        "torna dò sistema" | "chm")
             git_checkout_master
         ;;
         
         # Torna al branch precedente
-        "vai al precedente" | "chl")
+        "torna arè" | "chl")
             check_git_repo && git checkout -
         ;;
         
         # MERGE - Mergia un branch nel corrente
-        "merge" | "m")
+        "alleat 'e clan" | "m")
             git_merge
         ;;
         
         # REBASE - Fa rebase dal branch principale
-        "rebase main" | "rbm")
+        "mettit sottò sistem" | "rbm")
             git_rebase_master
         ;;
         
         # Pull + Rebase dal branch principale
-        "pull rebase main" | "prbm")
+        "aggiorna e mettit sott" | "prbm")
             git_pull_rebase_master
         ;;
         
         # Continua un rebase dopo aver risolto i conflitti
-        "rebase continue" | "rbc")
+        "vai avanti" | "rbc")
             check_git_repo && git rebase --continue
         ;;
         
         # Annulla un rebase in corso
-        "rebase abort" | "rba")
+        "ferma tutt" | "rba")
             check_git_repo && git rebase --abort
         ;;
         
         # PULL - Scarica e integra le modifiche dal remoto
-        "piliamm" | "p")
+        "pigl 'a merce" | "p")
             check_git_repo && git pull
         ;;
         
         # PUSH - Carica le modifiche sul remoto
-        "ammutta" | "pu")
+        "manna 'a merce" | "pu")
             check_git_repo && git push
         ;;
         
         # Push forzato (attenzione: sovrascrive la storia remota)
-        "ammutta forte" | "puf")
-            check_git_repo && git push -f
+        "spacca tutt" | "puf")
+            git_push_force
         ;;
         
         # ADD - Aggiunge tutti i file modificati allo stage
-        "aggiungi" | "a")
+        "mett dintò sacc" | "a")
             check_git_repo && git add .
         ;;
         
         # STATUS - Mostra lo stato dei file
-        "stato" | "st")
+        "comm stann 'e ccose" | "st")
             check_git_repo && git status
         ;;
         
         # STASH - Aggiunge i file e li salva nello stash
-        "aggiungi e sarba" | "as")
+        "scunne 'a roba" | "as")
             if check_git_repo; then
                 git add .
-                git stash
+                git stash && echo "$(tput setaf 6)✓ Roba scunnuta! (Tutto salvato nello stash!)$(tput sgr0)"
             fi
         ;;
         
         # Salva le modifiche correnti nello stash
-        "sarba" | "s")
+        "scunne" | "sarba" | "s")
             check_git_repo && git stash
         ;;
         
         # Applica le modifiche salvate nello stash
-        "sarba e metti" | "sa")
-            check_git_repo && git stash apply
+        "tira for 'a roba" | "sa")
+            check_git_repo && git stash apply && echo "$(tput setaf 6)✓ Roba tirata fora! (Stash applicato!)$(tput sgr0)"
         ;;
         
         # LOG - Visualizza la cronologia dei commit
-        "controlla" | "l")
+        "vir 'a storia" | "l")
             check_git_repo && git log
         ;;
         
         # COMMIT - Aggiunge tutti i file e crea un commit
-        "commetti" | "c")
+        "segna 'a moviment" | "c")
             git_commit
         ;;
         
         # RESET SOFT - Torna indietro di N commit mantenendo le modifiche
-        "resetta e sarba" | "rs")
+        "torna arrèt accort" | "rs")
             git_reset_soft
         ;;
         
         # RESET HARD - Torna indietro di N commit scartando tutto
-        "resetta tutt cos" | "rh")
+        "brucia tutt cos" | "resetta tutt cos" | "rh")
             git_reset_hard
         ;;
         
         # SQUASH - Comprime N commit in uno con nuovo messaggio
-        "sq")
+        "accumpagna 'e cose" | "sq")
             git_squash
         ;;
         
         # SQUASH - Comprime N commit mantenendo l'ultimo messaggio
-        "sql")
+        "accumpagna accussì" | "sql")
             git_squash_last_commit
         ;;
         
@@ -580,7 +607,7 @@ do
         
         # EXIT - Esce dal programma
         "esci" | "exit" | "q")
-            echo "$(tput setaf 6)Arrivederci!$(tput sgr0)"
+            echo "$(tput setaf 6)Jamme bella, ce verimm!$(tput sgr0)"
             exit 0
         ;;
         
@@ -591,8 +618,8 @@ do
         
         # Comando non riconosciuto - Mostra messaggio di errore
         *)
-            show_error "Comando non riconosciuto: '$command'"
-            echo "Digita $(tput setaf 6)'help'$(tput setaf 7) o $(tput setaf 6)'h'$(tput setaf 7) per la lista dei comandi$(tput sgr0)"
+            show_error "Stu comando nun 'o cunosco! (Comando non riconosciuto: '$command')"
+            echo "Digita $(tput setaf 6)'help'$(tput setaf 7) o $(tput setaf 6)'h'$(tput setaf 7) p'a lista d'e comandi (per la lista)$(tput sgr0)"
         ;;
     esac
 done
